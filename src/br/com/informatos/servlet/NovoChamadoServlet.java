@@ -2,7 +2,10 @@ package br.com.informatos.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -61,6 +64,22 @@ public class NovoChamadoServlet extends HttpServlet {
 			try{
 							
 			Class.forName("com.mysql.jdbc.Driver");
+			String SQL = "INSERT INTO chamados (titulo,conteudo) VALUES (?,?)"; 
+			
+			try {
+				Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/chamado","root","informatos");
+				PreparedStatement pstm = conn.prepareStatement(SQL);
+				pstm.setString(1, titulo);
+				pstm.setString(2, conteudo);
+				pstm.execute();
+				pstm.close();
+				conn.close();
+				
+			} catch (SQLException e) {				
+				e.printStackTrace();
+				out.println(e);
+			}
+			
 			}catch (ClassNotFoundException ex){
 				out.println("Problemas ao carregar driver!!!!");
 			}
@@ -68,6 +87,7 @@ public class NovoChamadoServlet extends HttpServlet {
 		
 		
 		out.println(conteudo);
+		//out.println(e);
 		
 
 	}

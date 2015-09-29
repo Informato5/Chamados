@@ -22,9 +22,9 @@ public class IndexServlet extends HttpServlet{
 			out.println("<body>");	
 			out.println("<h1>Sistema de Chamado</h1>");
 			out.println("<hr/>");
-			out.println("<a href='/NovoChamado'> Novo Chamado </a>");			
+			out.println("<a href='http://localhost:8080/Chamados/NovoChamado'> Novo Chamado </a>");			
 			out.println("<br>");
-			out.println("<a href='/ListarChamado'> Listar Chamado </a>");
+			out.println("<a href='http://localhost:8080/Chamados/ListarChamado'> Listar Chamado </a>");
 			out.println("<br>");
 			out.println("<a href='/Logoff'> Sair </a>");
 			out.println("</body>");
