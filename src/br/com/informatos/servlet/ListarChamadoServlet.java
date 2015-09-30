@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 
 
 
@@ -29,33 +31,38 @@ public class ListarChamadoServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();	
 
 		try{
-
 			Class.forName("com.mysql.jdbc.Driver");
-
-			String SQL = "SELECT * FROM chamados"; 
-
 			try {
-
-
 				Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/chamado","root","informatos");
+				
+				if(request.getParameter("id") != null){
+					int ID = Integer.parseInt(request.getParameter("id"));
+					String SQLDelete = "DELETE FROM chamados WHERE id = ?";
+					PreparedStatement pstm = conn.prepareStatement(SQLDelete);
+					pstm.setInt(1, ID);
+					pstm.execute();
+				}
+				
+				
+				String SQL = "SELECT * FROM chamados"; 
 				Statement stm = conn.createStatement();
-
 				ResultSet rs = stm.executeQuery(SQL);
-
+				
 				out.println("<table width = '100%>'");
-
-				out.println("<tr bgcolor = '#c0c0c0'>");
+				out.println("<tr>");
 				out.println("<td>ID</td>");
 				out.println("<td>Titulo</td>");
-				out.println("<td>Acoes</td>");	
+				out.println("<td>Conteudo</td>");
+				out.println("<td>Editar</td>");	
+				out.println("<td>Apagar</td>");	
 				out.println("</tr>");
-
-
 				while (rs.next()) {
-					//out.println("<tr>");
+					out.println("<tr>");
 					out.println("<td>" + rs.getInt("id") + "</td>");
-					out.println("<td>" + rs .getString("titulo") + "</td>");
-					out.println("<td>[x] - [0]</td>");
+					out.println("<td>" + rs.getString("titulo") + "</td>");
+					out.println("<td>" + rs.getString("conteudo") + "</td>");
+					out.println("<td>[EDITAR]</td>");
+					out.println("<td><a href='http://localhost:8080/Chamados/ListarChamado?id="+rs.getInt("id")+"'>[APAGAR]</td>");
 					out.println("</tr>");
 				}
 				out.println("</table>");
