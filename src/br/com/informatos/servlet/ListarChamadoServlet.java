@@ -13,11 +13,13 @@ import java.sql.Statement;
 
 
 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 
@@ -29,6 +31,12 @@ public class ListarChamadoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		PrintWriter out = response.getWriter();	
+		
+		HttpSession sessao = request.getSession();
+		
+		if (sessao.getAttribute("login")== null){
+			response.sendRedirect("http://localhost:8080/Chamados/Login");
+		}
 
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -61,8 +69,8 @@ public class ListarChamadoServlet extends HttpServlet {
 					out.println("<td>" + rs.getInt("id") + "</td>");
 					out.println("<td>" + rs.getString("titulo") + "</td>");
 					out.println("<td>" + rs.getString("conteudo") + "</td>");
-					out.println("<td>[EDITAR]</td>");
-					out.println("<td><a href='http://localhost:8080/Chamados/ListarChamado?id="+rs.getInt("id")+"'>[APAGAR]</td>");
+					out.println("<td><a href='http://localhost:8080/Chamados/EditarChamado?id="+rs.getInt("id")+"'>[EDITAR]</td>");					
+					out.println("<td><a href='http://localhost:8080/Chamados/ListarChamado?id="+rs.getInt("id")+"'>[APAGAR]</td>");					
 					out.println("</tr>");
 				}
 				out.println("</table>");

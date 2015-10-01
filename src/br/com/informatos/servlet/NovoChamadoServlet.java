@@ -18,12 +18,6 @@ public class NovoChamadoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 
-	public NovoChamadoServlet() {
-		super();
-
-	}
-
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			PrintWriter out = response.getWriter();
@@ -74,6 +68,8 @@ public class NovoChamadoServlet extends HttpServlet {
 				pstm.execute();
 				pstm.close();
 				conn.close();
+				
+				response.sendRedirect("http://localhost:8080/Chamados/ListarChamado");
 				
 			} catch (SQLException e) {				
 				e.printStackTrace();
